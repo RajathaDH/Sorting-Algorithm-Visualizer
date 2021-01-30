@@ -39,13 +39,11 @@ async function bubbleSort(arr) {
 
         for (let j = 0; j < arr.length - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
-                let temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+                swap(arr, j, j + 1);
                 swapped = true;
             }
 
-            updateView(arr);
+            updateView(arr, j, j + 1);
 
             await customDelay(speed);
         }
@@ -55,9 +53,23 @@ async function bubbleSort(arr) {
         }
     }
 
-    sortButton.disabled = false;
+    doneSorting();
     
     return arr;
+}
+
+function swap(arr, i, j) {
+    const temp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = temp;
+}
+
+function doneSorting() {
+    for (const child of visualizationPanel.children) {
+        child.style.background = 'blue';
+    }
+
+    sortButton.disabled = false;
 }
 
 function customDelay(delay) {
@@ -68,14 +80,18 @@ function customDelay(delay) {
     return promise;
 }
 
-function updateView(arr) {
+function updateView(arr, i, j) {
     visualizationPanel.innerHTML = '';
 
-    arr.forEach(num => {
+    arr.forEach((num, index) => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
         bar.textContent = num;
         bar.style.height = `${num * 4}px`;
+
+        if (index == i || index == j) {
+            bar.style.background = 'red';
+        }
 
         visualizationPanel.appendChild(bar);
     });
