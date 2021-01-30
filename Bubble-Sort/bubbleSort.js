@@ -2,6 +2,7 @@ const lengthInput = document.getElementById('lengthInput');
 const generateButton = document.getElementById('generateButton');
 const sortButton = document.getElementById('sortButton');
 const visualizationPanel = document.querySelector('.visualization-panel');
+const speedInput = document.getElementById('speedInput');
 
 let arr = [];
 
@@ -31,6 +32,8 @@ function generateRandomArray(length) {
 }
 
 async function bubbleSort(arr) {
+    const speed = Math.floor(1000 / speedInput.value);
+
     for (let i = 0; i < arr.length; i++) {
         let swapped = false;
 
@@ -44,7 +47,7 @@ async function bubbleSort(arr) {
 
             updateView(arr);
 
-            await customDelay(200);
+            await customDelay(speed);
         }
 
         if (swapped == false) {
