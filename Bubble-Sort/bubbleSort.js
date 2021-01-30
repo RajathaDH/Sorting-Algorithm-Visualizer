@@ -1,6 +1,7 @@
 const lengthInput = document.getElementById('lengthInput');
 const generateButton = document.getElementById('generateButton');
 const sortButton = document.getElementById('sortButton');
+const visualizationPanel = document.querySelector('.visualization-panel');
 
 let arr = [];
 
@@ -8,12 +9,14 @@ generateButton.addEventListener('click', () => {
     const length = lengthInput.value;
 
     arr = generateRandomArray(length);
+
+    updateView(arr);
 });
 
 sortButton.addEventListener('click', () => {
-    arr = bubbleSort(arr);
+    sortButton.disabled = true;
 
-    console.log(arr);
+    arr = bubbleSort(arr);
 });
 
 function generateRandomArray(length) {
@@ -27,7 +30,7 @@ function generateRandomArray(length) {
     return arr;
 }
 
-function bubbleSort(arr) {
+async function bubbleSort(arr) {
     for (let i = 0; i < arr.length; i++) {
         let swapped = false;
 
@@ -38,6 +41,10 @@ function bubbleSort(arr) {
                 arr[j + 1] = temp;
                 swapped = true;
             }
+
+            updateView(arr);
+
+            await customDelay(200);
         }
 
         if (swapped == false) {
@@ -45,20 +52,10 @@ function bubbleSort(arr) {
         }
     }
 
+    sortButton.disabled = false;
+    
     return arr;
 }
-
-async function main() {
-    console.log('start');
-    for(let i = 0;i < 10; i++){
-        await customDelay(1000);
-        console.log('iteration', i);
-    }
-
-    console.log('end');
-}
-
-main();
 
 function customDelay(delay) {
     const promise = new Promise((resolve, reject) => {
@@ -68,4 +65,15 @@ function customDelay(delay) {
     return promise;
 }
 
-//console.log(bubbleSort(generateRandomArray(10)));
+function updateView(arr) {
+    visualizationPanel.innerHTML = '';
+
+    arr.forEach(num => {
+        const bar = document.createElement('div');
+        bar.classList.add('bar');
+        bar.textContent = num;
+        bar.style.height = `${num * 4}px`;
+
+        visualizationPanel.appendChild(bar);
+    });
+}
