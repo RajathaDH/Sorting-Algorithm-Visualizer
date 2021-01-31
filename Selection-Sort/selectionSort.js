@@ -53,15 +53,11 @@ async function selectionSort(arr) {
         }
     }
 
+    updateView(arr);
+
     doneSorting();
     
     return arr;
-}
-
-function swap(arr, i, j) {
-    const temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
 }
 
 function doneSorting() {
