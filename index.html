@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="styles.css">
-    <script src="main.js" defer></script>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./main.js" type="module" defer></script>
     <title>Sorting Algorithm Visualizer</title>
 </head>
 <body>
@@ -12,6 +12,11 @@
         <div class="options">
             <input type="number" id="lengthInput" value="10" min="5" max="20">
             <input type="range" id="speedInput" min="1" max="10" value="5" step="1">
+            <select name="sorting-type" id="sortType">
+                <option value="bubble-sort">Bubble Sort</option>
+                <option value="insertion-sort">Insertion Sort</option>
+                <option value="selection-sort">Selection Sort</option>
+            </select>
             <button type="button" id="generateButton">Generate New Array</button>
             <button type="button" id="sortButton">Sort</button>
         </div>

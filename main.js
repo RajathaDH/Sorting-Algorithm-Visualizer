@@ -1,23 +1,28 @@
-const lengthInput = document.getElementById('lengthInput');
-const generateButton = document.getElementById('generateButton');
-const sortButton = document.getElementById('sortButton');
-const visualizationPanel = document.querySelector('.visualization-panel');
-const speedInput = document.getElementById('speedInput');
+const generateButtonElement = document.querySelector('#generateButton');
+const sortButtonElement = document.querySelector('#sortButton');
+const visualizationPanelElement = document.querySelector('.visualization-panel');
+const sortTypeElement = document.querySelector('#sortType');
+const lengthInputElement = document.querySelector('#lengthInput');
+const speedInputElement = document.querySelector('#speedInput');
 
 let arr = [];
 
-generateButton.addEventListener('click', () => {
-    const length = lengthInput.value;
+generateButtonElement.addEventListener('click', () => {
+    const length = lengthInputElement.value;
 
     arr = generateRandomArray(length);
 
     updateView(arr);
 });
 
-sortButton.addEventListener('click', () => {
-    sortButton.disabled = true;
+sortButtonElement.addEventListener('click', () => {
+    const sortType = sortTypeElement.value;
 
-    arr = bubbleSort(arr);
+    sortButtonElement.disabled = true;
+
+    if (sortType == 'bubble-sort') {
+        arr = bubbleSort(arr);
+    }
 });
 
 function generateRandomArray(length) {
@@ -31,21 +36,48 @@ function generateRandomArray(length) {
     return arr;
 }
 
+function updateView(arr, i, j) {
+    visualizationPanelElement.innerHTML = '';
+
+    arr.forEach((num, index) => {
+        const bar = document.createElement('div');
+        bar.classList.add('bar');
+        bar.textContent = num;
+        bar.style.height = `${num * 4}px`;
+
+        if (index == i || index == j) {
+            bar.style.background = 'red';
+        }
+
+        visualizationPanelElement.appendChild(bar);
+    });
+}
+
+function customDelay(delay) {
+    const promise = new Promise((resolve, reject) => {
+        setTimeout(resolve, delay);
+    });
+
+    return promise;
+}
+
 async function bubbleSort(arr) {
-    const speed = Math.floor(1000 / speedInput.value);
+    const delay = Math.floor(1000 / speedInputElement.value);
 
     for (let i = 0; i < arr.length; i++) {
         let swapped = false;
 
         for (let j = 0; j < arr.length - i - 1; j++) {
             if (arr[j] > arr[j + 1]) {
+                updateView(arr, j, j + 1);
+                await customDelay(delay);
                 swap(arr, j, j + 1);
                 swapped = true;
             }
 
             updateView(arr, j, j + 1);
 
-            await customDelay(speed);
+            await customDelay(delay);
         }
 
         if (swapped == false) {
@@ -65,34 +97,9 @@ function swap(arr, i, j) {
 }
 
 function doneSorting() {
-    for (const child of visualizationPanel.children) {
+    for (const child of visualizationPanelElement.children) {
         child.style.background = 'blue';
     }
 
-    sortButton.disabled = false;
-}
-
-function customDelay(delay) {
-    const promise = new Promise((resolve, reject) => {
-        setTimeout(resolve, delay);
-    });
-
-    return promise;
-}
-
-function updateView(arr, i, j) {
-    visualizationPanel.innerHTML = '';
-
-    arr.forEach((num, index) => {
-        const bar = document.createElement('div');
-        bar.classList.add('bar');
-        bar.textContent = num;
-        bar.style.height = `${num * 4}px`;
-
-        if (index == i || index == j) {
-            bar.style.background = 'red';
-        }
-
-        visualizationPanel.appendChild(bar);
-    });
+    sortButtonElement.disabled = false;
 }
