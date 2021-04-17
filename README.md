@@ -2,7 +2,7 @@
 
 An application to visualize sorting algorithms.
 
-[Visit Application]()
+[Visit Application](http://rajasort.surge.sh)
 
 1. Bubble Sort
 2. Insertion Sort
