@@ -1,3 +1,9 @@
 # Sorting Algorithm Visualizer
 
-A graphical application to visualize sorting algorithms.
+An application to visualize sorting algorithms.
+
+[Visit Application]()
+
+1. Bubble Sort
+2. Insertion Sort
+3. Selection Sort
