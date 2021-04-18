@@ -4,54 +4,63 @@ const visualizationPanelElement = document.querySelector('.visualization-panel')
 const sortTypeElement = document.querySelector('#sortType');
 const lengthInputElement = document.querySelector('#lengthInput');
 const speedInputElement = document.querySelector('#speedInput');
+const sortTypeDisplayElement = document.querySelector('#sortTypeDisplay');
+const bubbleSortDisplayElement = document.querySelector('#bubbleSortDisplay');
 
-let arr = [];
+let values = [];
+let sortType = sortTypeElement.value;
 
 generateButtonElement.addEventListener('click', () => {
     const length = lengthInputElement.value;
 
-    arr = generateRandomArray(length);
+    values = generateRandomvaluesay(length);
 
-    updateView(arr);
+    updateView(values);
 });
 
 sortButtonElement.addEventListener('click', () => {
-    const sortType = sortTypeElement.value;
-
     sortButtonElement.disabled = true;
 
     if (sortType == 'bubble-sort') {
-        bubbleSort(arr);
+        bubbleSort(values);
     } else if (sortType == 'insertion-sort') {
-        insertionSort(arr);
+        insertionSort(values);
     } else if (sortType == 'selection-sort') {
-        selectionSort(arr);
+        selectionSort(values);
     }
 });
 
-function generateRandomArray(length) {
-    const arr = [];
+sortTypeElement.addEventListener('change', e => {
+    sortType = e.target.value;
+
+    if (sortType == 'bubble-sort') {
+        sortTypeDisplayElement.textContent = 'Bubble Sort';
+    } else if (sortType == 'insertion-sort') {
+        sortTypeDisplayElement.textContent = 'Insertion Sort';
+    } else if (sortType == 'selection-sort') {
+        sortTypeDisplayElement.textContent = 'Selection Sort';
+    }
+});
+
+function generateRandomvaluesay(length) {
+    const values = [];
 
     for (let i = 0; i < length; i++) {
         const randomNumber = Math.floor(Math.random() * 100) + 1;
-        arr.push(randomNumber);
+        values.push(randomNumber);
     }
 
-    return arr;
+    return values;
 }
 
-function updateView(arr, i, j, colour) {
+function updateView(values) {
     visualizationPanelElement.innerHTML = '';
 
-    arr.forEach((num, index) => {
+    values.forEach(value => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        bar.textContent = num;
-        bar.style.height = `${num}%`;
-
-        if (index == i || index == j) {
-            bar.style.background = colour;
-        }
+        bar.textContent = value;
+        bar.style.height = `${value}%`;
 
         visualizationPanelElement.appendChild(bar);
     });
@@ -65,10 +74,10 @@ function customDelay(delay) {
     return promise;
 }
 
-function swap(arr, i, j) {
-    const temp = arr[i];
-    arr[i] = arr[j];
-    arr[j] = temp;
+function swap(values, i, j) {
+    const temp = values[i];
+    values[i] = values[j];
+    values[j] = temp;
 }
 
 function doneSorting() {
@@ -79,21 +88,29 @@ function doneSorting() {
     sortButtonElement.disabled = false;
 }
 
-async function bubbleSort(arr) {
+async function bubbleSort(values) {
     const delay = Math.floor(1000 / speedInputElement.value);
 
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < values.length; i++) {
         let swapped = false;
 
-        for (let j = 0; j < arr.length - i - 1; j++) {
-            updateView(arr, j, j + 1, 'red');
+        for (let j = 0; j < values.length - i - 1; j++) {
+            Array.from(bubbleSortDisplayElement.children).forEach(element => element.style.border = 'none');
+
+            bubbleSortDisplayElement.children[0].style.border = '';
+
+            updateViewBubble(values, j, j + 1, 'red');
             await customDelay(delay);
 
-            if (arr[j] > arr[j + 1]) {
-                swap(arr, j, j + 1);
+            if (values[j] > values[j + 1]) {
+                Array.from(bubbleSortDisplayElement.children).forEach(element => element.style.border = 'none');
+
+                bubbleSortDisplayElement.children[1].style.border = '';
+
+                swap(values, j, j + 1);
                 swapped = true;
                 
-                updateView(arr, j, j + 1, 'green');
+                updateViewBubble(values, j, j + 1, 'green');
                 await customDelay(delay);
             }
         }
@@ -105,41 +122,58 @@ async function bubbleSort(arr) {
 
     doneSorting();
     
-    return arr;
+    return values;
 }
 
-async function insertionSort(arr) {
+function updateViewBubble(values, i, j, colour) {
+    visualizationPanelElement.innerHTML = '';
+
+    values.forEach((value, index) => {
+        const bar = document.createElement('div');
+        bar.classList.add('bar');
+        bar.textContent = value;
+        bar.style.height = `${value}%`;
+
+        if (index == i || index == j) {
+            bar.style.background = colour;
+        }
+
+        visualizationPanelElement.appendChild(bar);
+    });
+}
+
+async function insertionSort(values) {
     const speed = Math.floor(1000 / speedInput.value);
 
-    for (let i = 1; i < arr.length; i++) {
-        const currentValue = arr[i];
+    for (let i = 1; i < values.length; i++) {
+        const currentValue = values[i];
         let compareValue = i - 1;
 
-        while (compareValue >= 0 && currentValue < arr[compareValue]) {
-            arr[compareValue + 1] = arr[compareValue];
+        while (compareValue >= 0 && currentValue < values[compareValue]) {
+            values[compareValue + 1] = values[compareValue];
             compareValue--;
 
-            updateViewInsertion(arr, currentValue, compareValue, i);
+            updateViewInsertion(values, currentValue, compareValue, i);
 
             await customDelay(speed);
         }
 
-        arr[compareValue + 1] = currentValue;
+        values[compareValue + 1] = currentValue;
     }
 
     doneSorting();
     
-    return arr;
+    return values;
 }
 
-function updateViewInsertion(arr, currentValue, compareValue, i) {
+function updateViewInsertion(values, currentValue, compareValue, i) {
     visualizationPanelElement.innerHTML = '';
 
-    arr.forEach((num, index) => {
+    values.forEach((value, index) => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        bar.textContent = num;
-        bar.style.height = `${num}%`;
+        bar.textContent = value;
+        bar.style.height = `${value}%`;
 
         if (index == compareValue) {
             bar.style.background = 'green';
@@ -149,43 +183,43 @@ function updateViewInsertion(arr, currentValue, compareValue, i) {
     });
 }
 
-async function selectionSort(arr) {
+async function selectionSort(values) {
     const speed = Math.floor(1000 / speedInput.value);
 
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < values.length; i++) {
         let minIndex = i;
-        for (let j = i + 1; j < arr.length; j++) {
-            if (arr[j] < arr[minIndex]) {
+        for (let j = i + 1; j < values.length; j++) {
+            if (values[j] < values[minIndex]) {
                 minIndex = j;
             }
 
-            updateViewSelection(arr, i, j, minIndex);
+            updateViewSelection(values, i, j, minIndex);
 
             await customDelay(speed);
         }
 
         if (minIndex != i) {
-            const temp = arr[i];
-            arr[i] = arr[minIndex];
-            arr[minIndex] = temp;
+            const temp = values[i];
+            values[i] = values[minIndex];
+            values[minIndex] = temp;
         }
     }
 
-    updateViewSelection(arr);
+    updateViewSelection(values);
 
     doneSorting();
     
-    return arr;
+    return values;
 }
 
-function updateViewSelection(arr, sortedPart, currentValue, minIndex) {
+function updateViewSelection(values, sortedPart, currentValue, minIndex) {
     visualizationPanelElement.innerHTML = '';
 
-    arr.forEach((num, index) => {
+    values.forEach((value, index) => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        bar.textContent = num;
-        bar.style.height = `${num}%`;
+        bar.textContent = value;
+        bar.style.height = `${value}%`;
 
         if (index < sortedPart) {
             bar.style.background = 'green';
