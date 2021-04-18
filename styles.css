@@ -38,6 +38,8 @@ body {
 .sort-detail li {
     margin-bottom: 2rem;
     border: 2px solid orange;
+    padding: 1rem;
+    border-radius: 1rem;
 }
 
 .visualization-panel {
