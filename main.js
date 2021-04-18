@@ -10,12 +10,14 @@ const lengthInputElement = document.querySelector('#lengthInput');
 const speedInputElement = document.querySelector('#speedInput');
 const sortTypeDisplayElement = document.querySelector('#sortTypeDisplay');
 const sortDetailsElement = document.querySelector('#sortDetails');
+const sortInfoElement = document.querySelector('.sort-info');
 
 const elements = {
     visualizationPanelElement,
     sortDetailsElement,
     generateButtonElement,
-    sortButtonElement
+    sortButtonElement,
+    sortInfoElement
 };
 
 let values = [];

@@ -8,7 +8,7 @@ function customDelay(delay) {
 
 function doneSorting(elements) {
     for (const child of elements.visualizationPanelElement.children) {
-        child.style.background = 'blue';
+        child.style.background = 'green';
     }
 
     elements.sortButtonElement.disabled = false;

@@ -19,13 +19,17 @@ export default async function insertionSort(values, speed, elements) {
         values[compareValue + 1] = currentValue;
     }
 
+    console.log(values);
+    updateView(values, null, null, null, elements);
+
     doneSorting(elements);
     
     return values;
 }
 
-function updateView(values, currentValue, compareValue, i, { visualizationPanelElement }) {
+function updateView(values, currentValue, compareValue, i, { visualizationPanelElement, sortInfoElement }) {
     visualizationPanelElement.innerHTML = '';
+    sortInfoElement.textContent = currentValue ? `Current Value: ${currentValue}` : '';
 
     values.forEach((value, index) => {
         const bar = document.createElement('div');
