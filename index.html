@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
-    <script src="./main.js" defer></script>
+    <script src="./main.js" type="module" defer></script>
     <title>Sorting Algorithm Visualizer</title>
 </head>
 <body>
@@ -16,11 +16,12 @@
             </div>
             <div class="option">
                 <label for="speedInput">Speed</label>
-                <input type="range" id="speedInput" min="1" max="10" value="5" step="1">
+                <input type="range" id="speedInput" min="0.5" max="10" value="5" step="0.5">
             </div>
             <div class="option">
                 <label for="sortType">Sort Type</label>
                 <select name="sorting-type" id="sortType">
+                    <option style="display: none;">Select Sort Type</option>
                     <option value="bubble-sort">Bubble Sort</option>
                     <option value="insertion-sort">Insertion Sort</option>
                     <option value="selection-sort">Selection Sort</option>
@@ -34,23 +35,13 @@
 
         <div class="sort-container">
             <div class="sort-details">
-                <h4 id="sortTypeDisplay">Bubble Sort</h4>
-                <ul class="sort-detail" id="bubbleSortDisplay">
-                    <li>Loop through each element and check if adjacent element is larger</li>
-                    <li>If adjacent element is larger, swap the two values</li>
-                </ul>
-
-               <!--  <ul class="sort-detail" id="insertionSortDisplay">
-                    <li>Loop through each element and check if adjacent element is larger</li>
-                    <li>If adjacent element is larger, swap the two values</li>
-                </ul> -->
-
-                <!-- <ul class="sort-detail" id="selectionSortDisplay">
-                    <li>Loop through each element and check if adjacent element is larger</li>
-                    <li>If adjacent element is larger, swap the two values</li>
-                </ul> -->
+                <h4 id="sortTypeDisplay"></h4>
+                <ul class="sort-detail" id="sortDetails"></ul>
             </div>
-            <div class="visualization-panel"></div>
+            <div class="sort-panel">
+                <div class="sort-info"></div>
+                <div class="visualization-panel"></div>
+            </div>
         </div>
     </div>
 </body>
