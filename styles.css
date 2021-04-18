@@ -17,7 +17,7 @@ body {
 
 .sort-container {
     width: 100%;
-    height: 80%;
+    height: 90%;
     display: flex;
     gap: 1rem;
 }
@@ -28,6 +28,11 @@ body {
     border: 2px solid black;
     border-radius: 1rem;
     padding: 2rem;
+}
+
+.sort-panel {
+    width: 70%;
+    height: 100%;
 }
 
 .sort-details h4 {
@@ -43,7 +48,7 @@ body {
 }
 
 .visualization-panel {
-    width: 70%;
+    width: 100%;
     height: 100%;
     background: yellow;
     display: flex;
@@ -54,6 +59,7 @@ body {
 
 .bar {
     width: 100%;
+    font-weight: bold;
     background: blue;
     margin: 2px;
     display: flex;
@@ -62,9 +68,11 @@ body {
 }
 
 .options-container {
+    width: 100%;
+    height: 10%;
     display: flex;
     flex-wrap: wrap;
-    padding: 1rem;
+    padding: 0.2rem;
     border: 2px solid black;
     border-radius: 1rem;
     margin-bottom: 1rem;
@@ -74,5 +82,12 @@ body {
     padding: 1rem;
     border: 2px solid black;
     border-radius: 1rem;
-    margin: 1rem;
+}
+
+.option:not(:nth-child(1)) {
+    margin-left: 1rem;
+}
+
+.sorted {
+    background: green;
 }

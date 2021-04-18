@@ -19,7 +19,7 @@ const elements = {
 };
 
 let values = [];
-let sortType = sortTypeElement.value;
+let sortType = '';
 
 generateButtonElement.addEventListener('click', () => {
     const length = lengthInputElement.value;
@@ -30,19 +30,15 @@ generateButtonElement.addEventListener('click', () => {
 });
 
 sortButtonElement.addEventListener('click', () => {
+    if (sortType == '') return;
+
     sort(sortType);
 });
 
 sortTypeElement.addEventListener('change', e => {
     sortType = e.target.value;
 
-    if (sortType == 'bubble-sort') {
-        sortTypeDisplayElement.textContent = 'Bubble Sort';
-    } else if (sortType == 'insertion-sort') {
-        sortTypeDisplayElement.textContent = 'Insertion Sort';
-    } else if (sortType == 'selection-sort') {
-        sortTypeDisplayElement.textContent = 'Selection Sort';
-    }
+    changeSortDetails(sortType);
 });
 
 function generateRandomValues(length) {
@@ -81,5 +77,30 @@ function sort(sortType) {
         insertionSort(values, speed, elements);
     } else if (sortType == 'selection-sort') {
         selectionSort(values, speed, elements);
+    }
+}
+
+function changeSortDetails(sortType) {
+    if (sortType == 'bubble-sort') {
+        sortTypeDisplayElement.textContent = 'Bubble Sort';
+        sortDetailsElement.innerHTML = `
+            <li>Loop through each element and check if adjacent element is larger</li>
+            <li>If adjacent element is larger, swap the two values</li>
+            <li>If no values were swapped when looping, sorting has been finished</li>
+        `;
+    } else if (sortType == 'insertion-sort') {
+        sortTypeDisplayElement.textContent = 'Insertion Sort';
+        sortDetailsElement.innerHTML = `
+            <li>Start at array index 1 (second element) and loop the entire array</li>
+            <li>Compare the current element with the previous element</li>
+            <li>If current element is smaller than previous element, keep comparing with elements before</li>
+            <li>Move the greater elements up by one and put the current element</li>
+        `;
+    } else if (sortType == 'selection-sort') {
+        sortTypeDisplayElement.textContent = 'Selection Sort';
+        sortDetailsElement.innerHTML = `
+            <li>Loop through each element and find the smallest element or largest depending on sort order</li>
+            <li>Swap the element with the current element</li>
+        `;
     }
 }
