@@ -5,13 +5,13 @@ export default async function selectionSort(values, speed, elements) {
 
     for (let i = 0; i < values.length; i++) {
         let minIndex = i;
+        
         for (let j = i + 1; j < values.length; j++) {
             if (values[j].value < values[minIndex].value) {
                 minIndex = j;
             }
 
             changeColour(values, i, j, minIndex);
-
             updateView(values, elements);
             await customDelay(delay);
         }
@@ -21,7 +21,6 @@ export default async function selectionSort(values, speed, elements) {
 
             values[i].colour = colours.SWAP_COLOUR;
             values[minIndex].colour = colours.SWAP_COLOUR;
-
             updateView(values, elements);
             await customDelay(delay);
         }

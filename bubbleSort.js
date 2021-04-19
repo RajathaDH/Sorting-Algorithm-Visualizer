@@ -11,7 +11,6 @@ export default async function bubbleSort(values, speed, elements) {
             highlightSortStatus(elements.sortDetailsElement, 0);
             values[j].colour = colours.CURRENT_COLOUR;
             values[j + 1].colour = colours.CURRENT_COLOUR;
-
             updateView(values, elements);
             await customDelay(delay);
 
@@ -22,7 +21,6 @@ export default async function bubbleSort(values, speed, elements) {
                 values[j].colour = colours.SWAP_COLOUR;
                 values[j + 1].colour = colours.SWAP_COLOUR;
                 highlightSortStatus(elements.sortDetailsElement, 1);
-
                 updateView(values, elements);
                 await customDelay(delay);
             }

@@ -7,18 +7,24 @@ export default async function insertionSort(values, speed, elements) {
         const currentValue = values[i];
         let compareIndex = i - 1;
 
+        updateView(values, elements);
+        await customDelay(delay);
+
         while (compareIndex >= 0 && currentValue.value < values[compareIndex].value) {
             values[compareIndex + 1] = values[compareIndex];
             compareIndex--;
 
             changeColours(values, currentValue, compareIndex, i);
-
+            elements.sortInfoElement.textContent = currentValue.value ? `Current Value: ${currentValue.value}` : '';
             updateView(values, elements);
             await customDelay(delay);
         }
 
         values[compareIndex + 1] = currentValue;
+
+        elements.sortInfoElement.textContent = '';
         updateView(values, elements);
+        await customDelay(delay);
     }
 
     endSort(elements);
