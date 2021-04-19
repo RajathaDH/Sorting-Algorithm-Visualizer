@@ -1,3 +1,4 @@
+import { updateView } from './utils.js';
 import bubbleSort from './bubbleSort.js';
 import insertionSort from './insertionSort.js';
 import selectionSort from './selectionSort.js';
@@ -28,7 +29,7 @@ generateButtonElement.addEventListener('click', () => {
 
     values = generateRandomValues(length);
 
-    createElements(values);
+    updateView(values, elements);
 });
 
 sortButtonElement.addEventListener('click', () => {
@@ -48,23 +49,13 @@ function generateRandomValues(length) {
 
     for (let i = 0; i < length; i++) {
         const randomNumber = Math.floor(Math.random() * 100) + 1;
-        values.push(randomNumber);
+        values.push({
+            value: randomNumber,
+            colour: 'blue'
+        });
     }
 
     return values;
-}
-
-function createElements(values) {
-    visualizationPanelElement.innerHTML = '';
-
-    values.forEach(value => {
-        const bar = document.createElement('div');
-        bar.classList.add('bar');
-        bar.textContent = value;
-        bar.style.height = `${value}%`;
-
-        visualizationPanelElement.appendChild(bar);
-    });
 }
 
 function sort(sortType) {

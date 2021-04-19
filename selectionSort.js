@@ -1,4 +1,4 @@
-import { customDelay, doneSorting } from './utils.js';
+import { colours, updateView, swap, customDelay, endSort } from './utils.js';
 
 export default async function selectionSort(values, speed, elements) {
     const delay = Math.floor(1000 / speed);
@@ -6,46 +6,42 @@ export default async function selectionSort(values, speed, elements) {
     for (let i = 0; i < values.length; i++) {
         let minIndex = i;
         for (let j = i + 1; j < values.length; j++) {
-            if (values[j] < values[minIndex]) {
+            if (values[j].value < values[minIndex].value) {
                 minIndex = j;
             }
 
-            updateView(values, i, j, minIndex, elements);
+            changeColour(values, i, j, minIndex);
 
+            updateView(values, elements);
             await customDelay(delay);
         }
 
         if (minIndex != i) {
-            const temp = values[i];
-            values[i] = values[minIndex];
-            values[minIndex] = temp;
+            swap(values, i, minIndex);
+
+            values[i].colour = colours.SWAP_COLOUR;
+            values[minIndex].colour = colours.SWAP_COLOUR;
+
+            updateView(values, elements);
+            await customDelay(delay);
         }
     }
 
-    updateView(values, null, null, null, elements);
-
-    doneSorting(elements);
+    endSort(elements);
     
     return values;
 }
 
-function updateView(values, sortedPart, currentValue, minIndex, { visualizationPanelElement }) {
-    visualizationPanelElement.innerHTML = '';
-
-    values.forEach((value, index) => {
-        const bar = document.createElement('div');
-        bar.classList.add('bar');
-        bar.textContent = value;
-        bar.style.height = `${value}%`;
-
+function changeColour(values, sortedPart, currentValue, minIndex) {
+    values.forEach((element, index) => {
         if (index < sortedPart) {
-            bar.style.background = 'green';
+            element.colour = colours.SORTED_COLOUR;
         } else if (index == currentValue) {
-            bar.style.background = 'orange';
+            element.colour = colours.CURRENT_COLOUR;
         } else if (index == minIndex) {
-            bar.style.background = 'red';
+            element.colour = colours.SWAP_COLOUR;
+        } else {
+            element.colour = colours.BAR_COLOUR;
         }
-
-        visualizationPanelElement.appendChild(bar);
     });
 }
