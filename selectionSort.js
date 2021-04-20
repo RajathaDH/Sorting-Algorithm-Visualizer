@@ -1,4 +1,4 @@
-import { colours, updateView, swap, customDelay, endSort } from './utils.js';
+import { colours, updateView, swap, customDelay, endSort, highlightSortStatus } from './utils.js';
 
 export default async function selectionSort(values, speed, elements) {
     const delay = Math.floor(1000 / speed);
@@ -12,20 +12,26 @@ export default async function selectionSort(values, speed, elements) {
             }
 
             changeColour(values, i, j, minIndex);
+            highlightSortStatus(elements.sortDetailsElement, 1);
             updateView(values, elements);
             await customDelay(delay);
         }
 
         if (minIndex != i) {
-            swap(values, i, minIndex);
-
             values[i].colour = colours.SWAP_COLOUR;
             values[minIndex].colour = colours.SWAP_COLOUR;
+            highlightSortStatus(elements.sortDetailsElement, 2);
+            updateView(values, elements);
+            await customDelay(delay);
+
+            swap(values, i, minIndex);
+
             updateView(values, elements);
             await customDelay(delay);
         }
     }
 
+    highlightSortStatus(elements.sortDetailsElement, 3);
     endSort(elements);
     
     return values;
