@@ -1,46 +1,54 @@
-import { customDelay, doneSorting } from './utils.js';
+import { colours, updateView, customDelay, endSort, highlightSortStatus } from './utils.js';
 
 export default async function insertionSort(values, speed, elements) {
     const delay = Math.floor(1000 / speed);
 
     for (let i = 1; i < values.length; i++) {
         const currentValue = values[i];
-        let compareValue = i - 1;
+        let compareIndex = i - 1;
 
-        while (compareValue >= 0 && currentValue < values[compareValue]) {
-            values[compareValue + 1] = values[compareValue];
-            compareValue--;
+        elements.sortInfoElement.textContent = `Current Value: ${currentValue.value}`;
+        currentValue.colour = colours.CURRENT_COLOUR;
+        highlightSortStatus(elements.sortDetailsElement, 1);
+        updateView(values, elements);
+        await customDelay(delay);
 
-            updateView(values, currentValue, compareValue, i, elements);
+        while (compareIndex >= 0 && currentValue.value < values[compareIndex].value) {
+            values[compareIndex + 1].colour = colours.SWAP_COLOUR;
+            highlightSortStatus(elements.sortDetailsElement, 2);
+            updateView(values, elements);
+            await customDelay(delay);
 
+            values[compareIndex + 1] = values[compareIndex];
+            compareIndex--;
+
+            changeColours(values, compareIndex, i);
+            updateView(values, elements);
             await customDelay(delay);
         }
 
-        values[compareValue + 1] = currentValue;
+        values[compareIndex + 1] = currentValue;
+
+        elements.sortInfoElement.textContent = '';
+        highlightSortStatus(elements.sortDetailsElement, 3);
+        updateView(values, elements);
+        await customDelay(delay);
     }
 
-    console.log(values);
-    updateView(values, null, null, null, elements);
-
-    doneSorting(elements);
+    highlightSortStatus(elements.sortDetailsElement, 4);
+    endSort(elements);
     
     return values;
 }
 
-function updateView(values, currentValue, compareValue, i, { visualizationPanelElement, sortInfoElement }) {
-    visualizationPanelElement.innerHTML = '';
-    sortInfoElement.textContent = currentValue ? `Current Value: ${currentValue}` : '';
-
-    values.forEach((value, index) => {
-        const bar = document.createElement('div');
-        bar.classList.add('bar');
-        bar.textContent = value;
-        bar.style.height = `${value}%`;
-
-        if (index == compareValue) {
-            bar.style.background = 'green';
+function changeColours(values, compareIndex, i) {
+    values.forEach((element, index) => {
+        if (index < i) {
+            element.colour = colours.SORTED_COLOUR;
+        } else if (index == compareIndex) {
+            element.colour = colours.SWAP_COLOUR;
+        } else {
+            element.colour = colours.BAR_COLOUR;
         }
-
-        visualizationPanelElement.appendChild(bar);
     });
 }
